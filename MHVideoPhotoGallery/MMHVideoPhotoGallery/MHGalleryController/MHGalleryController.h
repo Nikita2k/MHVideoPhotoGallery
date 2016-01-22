@@ -23,6 +23,13 @@
 -(NSArray<MHBarButtonItem *>*)customizeableToolBarItems:(NSArray<MHBarButtonItem *>*)toolBarItems forGalleryItem:(MHGalleryItem*)galleryItem;
 @end
 
+@protocol MHGalleryCacheDelegate <NSObject>
+
+- (void)imageForItem:(MHGalleryItem *)item inImageView:(UIImageView *)imageView completionBlock:(void (^)(UIImage *, NSError *))completionBlock;
+
+@end
+
+
 @protocol MHGalleryDataSource<NSObject>
 
 
@@ -46,6 +53,7 @@
 
 @property (nonatomic,assign) id<MHGalleryDelegate>              galleryDelegate;
 @property (nonatomic,assign) id<MHGalleryDataSource>            dataSource;
+@property (nonatomic, weak, readonly)  id<MHGalleryCacheDelegate>         cacheDelegate;
 @property (nonatomic,assign) BOOL                               autoplayVideos; //Default NO
 @property (nonatomic,assign) NSInteger                          presentationIndex; //From which index you want to present the Gallery.
 @property (nonatomic,strong) UIImageView                        *presentingFromImageView;
@@ -72,7 +80,9 @@
  *  @return MHGalleryController
  */
 - (id)initWithPresentationStyle:(MHGalleryViewMode)presentationStyle;
+- (id)initWithPresentationStyle:(MHGalleryViewMode)presentationStyle cacheDelegate:(id<MHGalleryCacheDelegate>)cacheDelegate;
 +(instancetype)galleryWithPresentationStyle:(MHGalleryViewMode)presentationStyle;
++(instancetype)galleryWithPresentationStyle:(MHGalleryViewMode)presentationStyle cacheDelegate:(id<MHGalleryCacheDelegate>)cacheDelegate;
 
 @property (nonatomic, copy) void (^finishedCallback)(NSInteger currentIndex,UIImage *image,MHTransitionDismissMHGallery *interactiveTransition,MHGalleryViewMode viewMode);
 

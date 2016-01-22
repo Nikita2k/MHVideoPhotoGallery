@@ -12,12 +12,19 @@
 @implementation MHGalleryController
 
 - (id)initWithPresentationStyle:(MHGalleryViewMode)presentationStyle{
+    
+    return [self initWithPresentationStyle:presentationStyle cacheDelegate:nil];
+    
+}
+
+- (id)initWithPresentationStyle:(MHGalleryViewMode)presentationStyle cacheDelegate:(id<MHGalleryCacheDelegate>)cacheDelegate {
+    
     self = [super initWithNibName:nil bundle:nil];
     if (!self)
         return nil;
     
     self.autoplayVideos = NO;
-
+    
     self.preferredStatusBarStyleMH = UIStatusBarStyleDefault;
     self.presentationStyle = presentationStyle;
     self.transitionCustomization = MHTransitionCustomization.new;
@@ -25,6 +32,7 @@
     
     self.overViewViewController= MHOverviewController.new;
     self.imageViewerViewController = MHGalleryImageViewerViewController.new;
+    self.imageViewerViewController.cacheDelegate = cacheDelegate;
     
     if (presentationStyle != MHGalleryViewModeOverView) {
         self.viewControllers = @[self.overViewViewController,self.imageViewerViewController];
@@ -32,10 +40,17 @@
         self.viewControllers = @[self.overViewViewController];
     }
     return self;
+    
 }
 
 +(instancetype)galleryWithPresentationStyle:(MHGalleryViewMode)presentationStyle{
     return [self.class.alloc initWithPresentationStyle:presentationStyle];
+}
+
++(instancetype)galleryWithPresentationStyle:(MHGalleryViewMode)presentationStyle cacheDelegate:(id<MHGalleryCacheDelegate>)cacheDelegate {
+    
+    return [self.class.alloc initWithPresentationStyle:presentationStyle cacheDelegate:cacheDelegate];
+    
 }
 
 -(void)setGalleryItems:(NSArray *)galleryItems{

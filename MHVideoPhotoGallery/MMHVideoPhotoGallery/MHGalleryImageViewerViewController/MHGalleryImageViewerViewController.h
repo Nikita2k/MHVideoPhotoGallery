@@ -15,6 +15,7 @@
 @class MHTransitionDismissMHGallery;
 @class MHGalleryController;
 @class MHImageViewController;
+@protocol MHGalleryCacheDelegate;
 
 @interface MHPinchGestureRecognizer : UIPinchGestureRecognizer
 @property (nonatomic)NSInteger tag;
@@ -23,6 +24,7 @@
 
 @interface MHGalleryImageViewerViewController : UIViewController<UIPageViewControllerDelegate,UIPageViewControllerDataSource,UINavigationControllerDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate,UINavigationBarDelegate, UITextViewDelegate>
 
+@property (nonatomic, weak)  id<MHGalleryCacheDelegate>  cacheDelegate;
 @property (nonatomic, strong)          NSArray *galleryItems;
 @property (nonatomic, strong)          UIToolbar *toolbar;
 @property (nonatomic, strong)          MHScrollViewLabel *titleLabel;

@@ -14,6 +14,7 @@
 #import "Masonry.h"
 #import "MHGradientView.h"
 #import "MHBarButtonItem.h"
+#import "MHGalleryController.h"
 
 @implementation MHPinchGestureRecognizer
 @end
@@ -1007,15 +1008,24 @@
         
         
         if (self.item.galleryType == MHGalleryTypeImage) {
-            
-            
-            [self.imageView setImageForMHGalleryItem:self.item imageType:MHImageTypeFull successBlock:^(UIImage *image, NSError *error) {
+
+            void (^imageReadyBlock)(UIImage *,NSError *) = ^(UIImage *image, NSError *error) {
                 if (!image) {
                     weakSelf.scrollView.maximumZoomScale  =1;
                     [weakSelf changeToErrorImage];
                 }
                 [weakSelf.act stopAnimating];
-            }];
+            };
+            
+            if (self.viewController.cacheDelegate != nil) {
+                
+                [self.viewController.cacheDelegate imageForItem:self.item inImageView:self.imageView completionBlock:imageReadyBlock];
+                
+            } else {
+                
+                [self.imageView setImageForMHGalleryItem:self.item imageType:MHImageTypeFull successBlock:imageReadyBlock];
+                
+            }
             
         }else{
             [MHGallerySharedManager.sharedManager startDownloadingThumbImage:self.item.URLString

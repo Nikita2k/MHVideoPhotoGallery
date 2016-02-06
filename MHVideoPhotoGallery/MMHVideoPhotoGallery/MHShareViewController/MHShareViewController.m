@@ -196,7 +196,7 @@
 @end
 
 
-@interface MHShareViewController ()
+@interface MHShareViewController () < MHMediaPreviewCollectionViewCellDelegate >
 @property (nonatomic,strong) MHDownloadView *downloadView;
 @property (nonatomic,strong) NSMutableArray *shareDataSource;
 @property (nonatomic,strong) NSArray *shareDataSourceStart;
@@ -551,6 +551,7 @@
         cell.selectionImageView.image =  MHTemplateImage(@"EditControlSelected");
     }
     cell.tag = indexPath.row;
+    cell.delegate = self;
     
 }
 -(NSArray*)sortObjectsWithFrame:(NSArray*)objects{
@@ -1023,10 +1024,13 @@
         
     }
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+#pragma mark - MHMediaPreviewCollectionViewCellDelegate
+
+- (void)imageForItem:(MHGalleryItem *)item inImageView:(UIImageView *)imageView completionBlock:(void (^)(UIImage *, NSError *))completionBlock {
+    
+    [self.delegate imageForItem:item inImageView:imageView completionBlock:completionBlock];
+    
 }
 
 @end

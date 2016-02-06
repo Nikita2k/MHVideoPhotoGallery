@@ -41,7 +41,7 @@
 
 @end
 
-@interface MHGalleryImageViewerViewController()<MHGalleryLabelDelegate,TTTAttributedLabelDelegate>
+@interface MHGalleryImageViewerViewController()<MHGalleryLabelDelegate,TTTAttributedLabelDelegate, MHShareViewControllerDelegate>
 @property (nonatomic, strong) MHGradientView           *bottomSuperView;
 @property (nonatomic, strong) MHGradientView           *topSuperView;
 
@@ -397,6 +397,7 @@
         MHShareViewController *share = [MHShareViewController new];
         share.pageIndex = self.pageIndex;
         share.galleryItems = self.galleryItems;
+        share.delegate = self;
         [self.navigationController pushViewController:share
                                              animated:YES];
     }else{
@@ -411,6 +412,16 @@
         }        
     }
 }
+
+#pragma mark - MHShareViewControllerDelegate
+
+
+- (void)imageForItem:(MHGalleryItem *)item inImageView:(UIImageView *)imageView completionBlock:(void (^)(UIImage *, NSError *))completionBlock {
+    
+    [self.cacheDelegate imageForItem:item inImageView:imageView completionBlock:completionBlock];
+    
+}
+
 
 -(void)updateTitleLabelForIndex:(NSInteger)index{
     if (index < self.numberOfGalleryItems) {

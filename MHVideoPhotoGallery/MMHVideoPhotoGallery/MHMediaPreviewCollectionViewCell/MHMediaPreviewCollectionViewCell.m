@@ -97,13 +97,26 @@
                                                                 [weakSelf.activityIndicator stopAnimating];
                                                             }];
     }else{
-        [self.thumbnail setImageForMHGalleryItem:galleryItem imageType:MHImageTypeThumb successBlock:^(UIImage *image, NSError *error) {
+        
+        void (^completionBlock)(UIImage *, NSError *) = ^(UIImage *image, NSError *error) {
+            
             [weakSelf.activityIndicator stopAnimating];
             if (!image) {
                 weakSelf.thumbnail.backgroundColor = UIColor.whiteColor;
                 weakSelf.thumbnail.image = MHGalleryImage(@"error");
             }
-        }];
+            
+        };
+        
+        if (self.delegate) {
+            
+            [self.delegate imageForItem:galleryItem inImageView:self.thumbnail completionBlock:completionBlock];
+            
+        } else {
+         
+            [self.thumbnail setImageForMHGalleryItem:galleryItem imageType:MHImageTypeThumb successBlock:completionBlock];
+            
+        }
         
     }
     _galleryItem = galleryItem;

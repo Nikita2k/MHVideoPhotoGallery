@@ -10,7 +10,15 @@
 
 @class MHGalleryItem;
 
+@protocol MHMediaPreviewCollectionViewCellDelegate
+
+- (void)imageForItem:(MHGalleryItem *)item inImageView:(UIImageView *)imageView completionBlock:(void (^)(UIImage *, NSError *))completionBlock;
+
+@end
+
 @interface MHMediaPreviewCollectionViewCell : UICollectionViewCell
+
+@property (nonatomic, weak) id<MHMediaPreviewCollectionViewCellDelegate> delegate;
 
 @property (nonatomic, strong) UIImageView             *thumbnail;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;

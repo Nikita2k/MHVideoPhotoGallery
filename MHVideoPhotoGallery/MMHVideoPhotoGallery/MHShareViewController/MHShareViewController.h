@@ -64,8 +64,17 @@ _Pragma("clang diagnostic pop") \
 @property (strong, nonatomic) UILabel *descriptionLabel;
 @end
 
+
+@class MHGalleryItem;
+@protocol MHShareViewControllerDelegate
+
+- (void)imageForItem:(MHGalleryItem *)item inImageView:(UIImageView *)imageView completionBlock:(void (^)(UIImage *, NSError *))completionBlock;
+
+@end
+
 @interface MHShareViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIAlertViewDelegate,MFMailComposeViewControllerDelegate,MFMessageComposeViewControllerDelegate>
 
+@property (nonatomic, weak) id<MHShareViewControllerDelegate> delegate;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic,strong) UITableView *tableViewShare;
 @property(nonatomic,strong) UIView *gradientView;

@@ -530,6 +530,7 @@
     
     MHGalleryItem *item = [self itemForIndex:indexPath.row];
     
+    cell.delegate = self;    
     cell.videoDurationLength.text = @"";
     cell.videoIcon.hidden = YES;
     cell.videoGradient.hidden = YES;
@@ -551,7 +552,6 @@
         cell.selectionImageView.image =  MHTemplateImage(@"EditControlSelected");
     }
     cell.tag = indexPath.row;
-    cell.delegate = self;
     
 }
 -(NSArray*)sortObjectsWithFrame:(NSArray*)objects{
